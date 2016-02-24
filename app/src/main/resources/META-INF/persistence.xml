@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                                 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+    <persistence-unit name="linguistics" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/Linguistics</jta-data-source>
+        <class>jp.gr.java_conf.hhayakawa_jp.linguistics.model.LineEntity</class>
+        <class>jp.gr.java_conf.hhayakawa_jp.linguistics.model.LineId</class>
+        <class>jp.gr.java_conf.hhayakawa_jp.linguistics.model.WordEntity</class>
+        <properties>
+            <property name="toplink.ddl-generation"
+                      value="drop-and-create-tables"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

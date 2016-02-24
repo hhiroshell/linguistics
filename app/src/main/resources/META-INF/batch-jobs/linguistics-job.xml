@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<job id="linguistics-job" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <properties>
+        <property name="charset" value="UTF-8" />
+        <property name="index" value="/tmp/shared/app_data/linguistics/data/index.txt"/>
+    </properties>
+
+    <step id="process">
+        <chunk item-count="3">
+            <reader ref="LinguisticsItemReader">
+                <properties>
+                    <property name="index.start"
+                              value="#{partitionPlan['index.start']}"/>
+                    <property name="index.end"
+                              value="#{partitionPlan['index.end']}"/>
+                    <property name="id"
+                              value="#{partitionPlan['id']}"/>
+                </properties>
+            </reader>
+            <processor ref="LinguisticsItemProcessor"></processor>
+            <writer ref="LinguisticsItemWriter"></writer>
+        </chunk>
+        <partition>
+            <mapper ref="LinguisticsPartitionMapper" />
+        </partition>
+    </step>
+
+</job>
