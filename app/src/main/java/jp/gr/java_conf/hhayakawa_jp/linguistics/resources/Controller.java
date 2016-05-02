@@ -8,6 +8,7 @@ import javax.batch.runtime.BatchRuntime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -62,6 +63,19 @@ public class Controller {
         JobOperator operator = BatchRuntime.getJobOperator();
         long id = operator.start(JOB_ID, exec_parameters);
         return "Started: " + id;
+    }
+
+    /**
+     * ジョブの実行結果（DBに保存されたデータ）を削除して、再度実行できる状態にします
+     * 
+     * @return "ジョブの結果がクリアされた旨を示す文字列"
+     */
+    @DELETE
+    @Path("/Clear")
+    public String clear() {
+        em.createNamedQuery("line.deleteAll");
+        // TODO: トランザクションの扱いを正しく実装する
+        return "cleared.";
     }
 
     /**
