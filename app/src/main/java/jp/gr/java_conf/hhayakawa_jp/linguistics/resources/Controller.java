@@ -7,6 +7,11 @@ import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -73,9 +78,31 @@ public class Controller {
     @DELETE
     @Path("/Clear")
     public String clear() {
-        em.createNamedQuery("line.deleteAll");
-        // TODO: トランザクションの扱いを正しく実装する
-        return "cleared.";
+        int result = 0;
+        try {
+            utx.begin();
+            result = em.createNamedQuery("line.deleteAll").executeUpdate();
+            if (result == 0) {
+                utx.rollback();
+                return "failed to clear data.";
+            } else {
+                utx.commit();
+                return result + " entries cleared.";
+            }
+        } catch (NotSupportedException | SecurityException
+                | IllegalStateException| RollbackException
+                | HeuristicMixedException | HeuristicRollbackException
+                | SystemException e) {
+            try {
+                utx.rollback();
+            } catch (IllegalStateException | SecurityException
+                    | SystemException e2) {
+                e2.printStackTrace();
+                throw new IllegalStateException(e2);
+            }
+            e.printStackTrace();
+            return "failed to clear data.";
+        }
     }
 
     /**
