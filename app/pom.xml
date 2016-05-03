@@ -13,6 +13,10 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <wls-admin-url>t3://localhost:8001</wls-admin-url>
+        <wls-admin-user>weblogic</wls-admin-user>
+        <wls-admin-password>welcome1</wls-admin-password>
+        <wls-targets>AdminServer</wls-targets>
     </properties>
 
     <dependencies>
@@ -55,6 +59,27 @@
                 <groupId>com.oracle.weblogic</groupId>
                 <artifactId>weblogic-maven-plugin</artifactId>
                 <version>12.2.1-0-0</version>
+                <executions>
+                    <execution>
+                        <id>wls-redeploy</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>redeploy</goal>
+                        </goals>
+                        <configuration>
+                            <adminurl>${wls-admin-url}</adminurl>
+                            <user>${wls-admin-user}</user>
+                            <password>${wls-admin-password}</password>
+                            <targets>${wls-targets}</targets>
+                            <upload>true</upload>
+                            <remote>false</remote>
+                            <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+                            <name>${project.build.finalName}</name>
+                            <debug>true</debug>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
