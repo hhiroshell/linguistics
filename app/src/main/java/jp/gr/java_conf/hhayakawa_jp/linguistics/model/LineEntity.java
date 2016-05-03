@@ -7,10 +7,12 @@ import javax.persistence.ElementCollection;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "line")
+@NamedQuery(name="line.deleteAll", query="DELETE FROM LineEntity CASCADE")
 public class LineEntity {
 
     @EmbeddedId
