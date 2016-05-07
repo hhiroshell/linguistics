@@ -26,7 +26,7 @@ import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants.ExecutionParameter;
  *
  * @author hhayakaw
  */
-@Path("/LinguisticsJobController")
+@Path("/JobController")
 public class Controller {
 
     @Resource
