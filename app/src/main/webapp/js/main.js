@@ -34,3 +34,14 @@
         }
     }
 });
+
+require(['jquery', 'knockout', 'ojs/ojknockout', 'ojs/ojmodule'],
+function($, ko)
+{
+    $(document).ready(
+        function()
+        {
+            ko.applyBindings(null, document.getElementById('content'));
+        }
+    );
+});
