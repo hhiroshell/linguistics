@@ -1,4 +1,4 @@
-package jp.gr.java_conf.hhayakawa_jp.linguistics.resources;
+package jp.gr.java_conf.hhayakawa_jp.linguistics.controller;
 
 import java.util.Properties;
 
@@ -26,8 +26,8 @@ import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants.ExecutionParameter;
  *
  * @author hhayakaw
  */
-@Path("/JobController")
-public class Controller {
+@Path("/Controller")
+public class RestController {
 
     @Resource
     private UserTransaction utx;
@@ -42,7 +42,7 @@ public class Controller {
     /**
      * デフォルト コンストラクター
      */
-    public Controller() {}
+    public RestController() {}
 
     /**
      * ジョブを実行します
