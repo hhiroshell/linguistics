@@ -41,6 +41,7 @@ function($, ko)
     $(document).ready(
         function()
         {
+            connectSocket();
             ko.applyBindings(null, document.getElementById('content'));
         }
     );
