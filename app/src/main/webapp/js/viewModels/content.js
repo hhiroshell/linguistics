@@ -4,9 +4,12 @@ function(oj, ko, $)
     function buttonModel()
     {
         var self = this;
-        self.click_start_button = function(data, event)
+        self.click_start_button = function()
         {
-            startJob("start !");
+            sendMessage(JSON.stringify({
+                partitions: 2,
+                threads: 2
+            }));
         }
     }
 

@@ -29,6 +29,6 @@ function onMessage(evt) {
     alert(evt.data);
 }
 
-function startJob(message) {
+function sendMessage(message) {
     websocket.send(message);
 }
