@@ -110,7 +110,6 @@ public class LinguisticsItemReader implements ItemReader {
         try {
             indexProcessor = IndexProcessor.getIndexProcessor(
                     index, charset, start, end);
-            reader = indexProcessor.getNextReader();
         } catch (IOException e) {
             try {
                 if (indexProcessor != null) {
