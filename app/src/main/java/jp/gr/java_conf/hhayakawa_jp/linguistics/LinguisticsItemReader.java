@@ -127,16 +127,17 @@ public class LinguisticsItemReader implements ItemReader {
      */
     @Override
     public Object readItem() throws Exception {
-        String lineString = reader.readLine();
-        if (lineString == null) {
-            System.out.println("finished(partition: " + partition_id + " | "
-                    + "piece: " + "\"" + indexProcessor.getAuthor() + "/"
-                    + indexProcessor.getPiece() + "\""+ ")");
+        String lineString = null;
+        if (reader == null || (lineString = reader.readLine()) == null) {
             reader = indexProcessor.getNextReader();
             if (reader == null) {
                 return null;
             }
+            // あらたな作品の読み込みの開始
             lineString = reader.readLine();
+            if (lineString == null) {
+                throw new LinguisticsIllegalDataException("blank data.");
+            }
         }
         LineId lineId = new LineId(indexProcessor.getAuthor(),
                 indexProcessor.getPiece(), reader.getLineNumber());
