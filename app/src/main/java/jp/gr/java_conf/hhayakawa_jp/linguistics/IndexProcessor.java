@@ -67,6 +67,15 @@ public final class IndexProcessor {
      */
     private String piece = null;
     /**
+     * 現在のReaderが処理する作品が、全体の何番目に当たるかを表す数値
+     */
+    private int processed = 0;
+    /**
+     * このIndexProcessorが処理する作品の数
+     */
+    private final int pieces;
+    
+    /**
      * インデックスとデータファイルを読み込む際の、文字コードのデフォルト 
      */
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
@@ -158,6 +167,7 @@ public final class IndexProcessor {
         }
         this.start = start;
         this.end = end;
+        this.pieces = end - start + 1;
     }
 
     /**
@@ -189,7 +199,7 @@ public final class IndexProcessor {
         // ファイルが見つかるまで繰り返し
         } while (!(new File(root + "/" + next)).isFile());
 
-        updateAuthorAndPiece(next);
+        updateProgress(next);
         br_data = Files.newBufferedReader(
                 Paths.get(root + "/" + next), charset);
         lr_data = new LineNumberReader(br_data);
@@ -214,6 +224,11 @@ public final class IndexProcessor {
         return piece;
     }
 
+    Progress getProgress() {
+        return new Progress(
+                Progress.Status.IN_PROGRESS, author, piece, pieces, processed);
+    }
+
     /**
      * インデックスとデータファイルのReaderを全てクローズする
      * 
@@ -235,10 +250,11 @@ public final class IndexProcessor {
         }
     }
 
-    private void updateAuthorAndPiece(String dataPath) {
+    private void updateProgress(String dataPath) {
         String[] path = dataPath.split("/");
         author = path[0];
         piece = path[1];
+        processed = lr_index.getLineNumber();
     }
 
 }

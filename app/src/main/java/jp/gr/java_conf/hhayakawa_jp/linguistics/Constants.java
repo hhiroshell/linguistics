@@ -58,7 +58,7 @@ public final class Constants {
      * @author hhayakaw
      *
      */
-    final public class ExecutionParameter {
+    public final class ExecutionParameter {
         /**
          * プロパティキー： パーティション数
          */
