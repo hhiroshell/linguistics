@@ -3,6 +3,7 @@ package jp.gr.java_conf.hhayakawa_jp.linguistics.controller;
 import javax.json.JsonObject;
 
 public class JobParameter {
+
     private int partitions = 1;
     private int threads = 1;
 
