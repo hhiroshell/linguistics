@@ -34,10 +34,6 @@ public class RestController {
 
     @PersistenceContext(unitName = Constants.PERSISTENCE_UNIT_NAME)
     private EntityManager em;
-    /**
-     * バッチジョブのジョブID
-     */
-    private static final String JOB_ID = "linguistics-job";
 
     /**
      * デフォルト コンストラクター
@@ -66,7 +62,7 @@ public class RestController {
         exec_parameters.put(
                 ExecutionParameter.PROPKEY_THREAD_NUMBER, String.valueOf(threads));
         JobOperator operator = BatchRuntime.getJobOperator();
-        long id = operator.start(JOB_ID, exec_parameters);
+        long id = operator.start(Constants.JOB_ID, exec_parameters);
         return "Started: " + id;
     }
 

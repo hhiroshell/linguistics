@@ -11,6 +11,10 @@ public final class Constants {
      * JPAのpersistence-unit名
      */
     public static final String PERSISTENCE_UNIT_NAME = "linguistics";
+    /**
+     * バッチジョブのジョブID
+     */
+    public static final String JOB_ID = "linguistics-job";
 
     /**
      * ジョブプロパティに関連する定数
@@ -27,7 +31,6 @@ public final class Constants {
          * プロパティキー: インデックスファイルのパス
          */
         static final String PROPKEY_INDEX_FILE = "index";
-        
     }
 
     /**
@@ -49,7 +52,6 @@ public final class Constants {
          * プロパティキー: パーティションに振られたID番号
          */
         static final String PROPKEY_PARTITION_ID = "id";
-        
     }
 
     /**
