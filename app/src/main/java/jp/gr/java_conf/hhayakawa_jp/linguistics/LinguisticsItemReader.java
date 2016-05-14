@@ -9,6 +9,8 @@ import java.util.Properties;
 
 import javax.batch.api.BatchProperty;
 import javax.batch.api.chunk.ItemReader;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.context.JobContext;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -70,6 +72,11 @@ public class LinguisticsItemReader implements ItemReader {
     @BatchProperty(name = Constants.PartitionProperty.PROPKEY_PARTITION_ID)
     private String partition_id;
     /**
+     * 作品の読み込み開始／終了時に実行されるメソッドを定義したListener
+     */
+    private ReadPieceListener readPieceListener = null;
+    
+    /**
      * デフォルトコンストラクタ
      */
 //    public LinguisticsItemReader() {}
@@ -97,6 +104,40 @@ public class LinguisticsItemReader implements ItemReader {
      */
     @Override
     public void open(Serializable arg0) throws Exception {
+        initIndexProcessor();
+        initReadPieceListener();
+    }
+
+    /* (non-Javadoc)
+     * @see javax.batch.api.chunk.ItemReader#readItem()
+     */
+    @Override
+    public Object readItem() throws Exception {
+        String lineString = null;
+        if (reader == null || (lineString = reader.readLine()) == null) {
+            // TODO call ReadPieceListener#afterRead()
+            reader = indexProcessor.getNextReader();
+            if (reader == null) {
+                System.out.println("finished.");
+                return null;
+            }
+            beforeReadPiece();
+            lineString = reader.readLine();
+            if (lineString == null) {
+                throw new LinguisticsIllegalDataException("blank data.");
+            }
+        }
+        LineId lineId = new LineId(indexProcessor.getAuthor(),
+                indexProcessor.getPiece(), reader.getLineNumber());
+        return new Line(lineId, lineString);
+    }
+
+    /**
+     * このパーティションで利用するIndexProcessor()を作成します。
+     * 
+     * @throws IOException
+     */
+    private void initIndexProcessor() throws IOException {
         this.start = Integer.valueOf(start_string);
         this.end = Integer.valueOf(end_string);
         Properties job_properties = jobCtx.getProperties();
@@ -121,26 +162,30 @@ public class LinguisticsItemReader implements ItemReader {
         }
     }
 
-    /* (non-Javadoc)
-     * @see javax.batch.api.chunk.ItemReader#readItem()
+    /**
+     * このジョブに適用するReadPieceListerをキャッシュします。
      */
-    @Override
-    public Object readItem() throws Exception {
-        String lineString = null;
-        if (reader == null || (lineString = reader.readLine()) == null) {
-            reader = indexProcessor.getNextReader();
-            if (reader == null) {
-                return null;
-            }
-            // あらたな作品の読み込みの開始
-            lineString = reader.readLine();
-            if (lineString == null) {
-                throw new LinguisticsIllegalDataException("blank data.");
-            }
+    private void initReadPieceListener() {
+        JobOperator operator = BatchRuntime.getJobOperator();
+        Properties exec_parameters =
+                operator.getParameters(jobCtx.getExecutionId());
+        String key = exec_parameters.getProperty(
+                Constants.ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY);
+        if (key != null && key.length() > 0) {
+            readPieceListener = ReadPieceListenerRegister.getInstance().get(key);
         }
-        LineId lineId = new LineId(indexProcessor.getAuthor(),
-                indexProcessor.getPiece(), reader.getLineNumber());
-        return new Line(lineId, lineString);
+    }
+
+    /**
+     * 作品の読み込みの開始直前のListenerの処理を実行します。
+     * 
+     * @throws LinguisticsException
+     */
+    private void beforeReadPiece() throws LinguisticsException {
+        if (readPieceListener != null) {
+            readPieceListener.beforeRead(
+                    partition_id, indexProcessor.getProgress());
+        }
     }
 
 }

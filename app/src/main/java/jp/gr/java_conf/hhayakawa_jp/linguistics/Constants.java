@@ -69,6 +69,11 @@ public final class Constants {
          * プロパティキー: スレッド数
          */
         public static final String PROPKEY_THREAD_NUMBER = "threads";
-        
+        /**
+         * プロパティキー: ReadPieceListerをレジスターから取り出すためのキー
+         */
+        public static final String PROPKEY_READ_PIECE_LISTENER_KEY =
+                "read_piece_listener_key";
     }
+
 }
