@@ -27,7 +27,6 @@ public class JsonDecoder implements Decoder.Text<JsonObject> {
 
     @Override
     public JsonObject decode(String message) throws DecodeException {
-        System.out.println("message: " + message);
         if (message == null) {
             // TODO: ちゃんとしたエラーハンドリングを実装する
             throw new NullPointerException();

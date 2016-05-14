@@ -1,5 +1,11 @@
 package jp.gr.java_conf.hhayakawa_jp.linguistics;
 
+/**
+ * 作品の読み込み開始／終了時に実行されるメソッドを定義したListener
+ * 
+ * @author hhayakaw
+ *
+ */
 public interface ReadPieceListener {
 
     void beforeRead(String partition_id, Progress progress)
