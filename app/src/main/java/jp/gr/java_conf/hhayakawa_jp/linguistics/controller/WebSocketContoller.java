@@ -1,9 +1,10 @@
 package jp.gr.java_conf.hhayakawa_jp.linguistics.controller;
 
-import java.io.IOException;
+import java.util.Properties;
 
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.json.JsonObject;
-import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -11,6 +12,16 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants.ExecutionParameter;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListener;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListenerRegister;
+
+/**
+ * ジョブの起動等の制御を行うための、WebSocketのインターフェースを提供します
+ *
+ * @author hhayakaw
+ */
 @ServerEndpoint(value = "/websocket",
                 decoders = JsonDecoder.class,
                 encoders = JsonEncoder.class)
@@ -34,22 +45,47 @@ public class WebSocketContoller {
         t.printStackTrace();
     }
 
+    /**
+     * ジョブを開始します。<br>
+     * パラメータとして、パーティション数、スレッド数を設定したJsonObjectと、
+     * WebSocketのSessionオブジェクトを受け取ります。
+     * 
+     * @param json パーティション数、スレッド数を設定したJsonObject
+     * @param session WebSocketのSessionオブジェクト
+     * 
+     */
     @OnMessage
-    public void startJob(JsonObject json, Session session) throws IOException {
+    public void startJob(JsonObject json, Session session) {
         if (json == null) {
             // TODO: ここでnullになる前にdecodeでエラーにすべきかも
             throw new NullPointerException();
         }
-        JobParameter pamam = JobParameter.createInstance(json);
-        // TODO start job.
-    }
+        int partitions = json.getInt("partitions", 1);
+        if (partitions <= 0) {
+            throw new IllegalArgumentException();
+        }
+        int threads = json.getInt("threads", 1);
+        if (threads <= 0) {
+            throw new IllegalArgumentException();
+        }
+        System.out.println("Job Parameter "
+                + "[partitions=" + partitions + ", threads=" + threads + "]");
 
-    // TODO このメソッドは適切なクラスに移行すべき
-    public static void notifyStatus(Session session)
-            throws IOException, EncodeException {
-        JobStatus status = new JobStatus();
-        JsonObject json = JobStatus.createJsonObject(status);
-        session.getBasicRemote().sendObject(json);
+        Properties exec_parameters = new Properties();
+        exec_parameters.put(ExecutionParameter.PROPKEY_PARTITION_NUMBER,
+                String.valueOf(partitions));
+        exec_parameters.put(ExecutionParameter.PROPKEY_THREAD_NUMBER,
+                String.valueOf(threads));
+
+        ReadPieceListener listener = new WebSocketReadPieceListener(session);
+        String key = ReadPieceListenerRegister.getInstance().register(listener);
+        exec_parameters.put(
+                ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY,
+                key);
+
+        JobOperator operator = BatchRuntime.getJobOperator();
+        operator.start(Constants.JOB_ID, exec_parameters);
+        System.out.println("started.");
     }
 
 }
