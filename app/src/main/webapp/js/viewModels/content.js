@@ -1,7 +1,9 @@
+var contentViewModel = {};
+
 define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton'],
 function(oj, ko, $)
 {
-    function buttonModel()
+    function contentViewModel()
     {
         var self = this;
         self.click_start_button = function()
@@ -13,6 +15,6 @@ function(oj, ko, $)
         }
     }
 
-    return new buttonModel();
+    return new contentViewModel();
 });
 

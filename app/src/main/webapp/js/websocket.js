@@ -26,7 +26,7 @@ function onClose(evt) {
 
 function onMessage(evt) {
     //var data = JSON.parse(evt.data);
-    alert(evt.data);
+    $("#progress").text(evt.data);
 }
 
 function sendMessage(message) {
