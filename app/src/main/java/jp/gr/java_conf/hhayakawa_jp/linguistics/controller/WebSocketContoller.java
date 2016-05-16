@@ -14,8 +14,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants;
 import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants.ExecutionParameter;
-import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListener;
-import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListenerRegister;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListenerLogic;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.ListenerLogicRegister;
 
 /**
  * ジョブの起動等の制御を行うための、WebSocketのインターフェースを提供します
@@ -77,8 +77,9 @@ public class WebSocketContoller {
         exec_parameters.put(ExecutionParameter.PROPKEY_THREAD_NUMBER,
                 String.valueOf(threads));
 
-        ReadPieceListener listener = new WebSocketReadPieceListener(session);
-        String key = ReadPieceListenerRegister.getInstance().register(listener);
+        ReadPieceListenerLogic listener =
+                new WebSocketReadPieceListenerLogic(session);
+        String key = ListenerLogicRegister.getInstance().register(listener);
         exec_parameters.put(
                 ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY,
                 key);

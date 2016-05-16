@@ -6,7 +6,7 @@ package jp.gr.java_conf.hhayakawa_jp.linguistics;
  * @author hhayakaw
  *
  */
-public interface ReadPieceListener {
+public interface ReadPieceListenerLogic extends ListenerLogic {
 
     void beforeRead(String partition_id, Progress progress)
             throws LinguisticsException;

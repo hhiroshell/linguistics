@@ -9,13 +9,13 @@ import javax.websocket.Session;
 
 import jp.gr.java_conf.hhayakawa_jp.linguistics.LinguisticsException;
 import jp.gr.java_conf.hhayakawa_jp.linguistics.Progress;
-import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListener;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListenerLogic;
 
-public class WebSocketReadPieceListener implements ReadPieceListener {
+public class WebSocketReadPieceListenerLogic implements ReadPieceListenerLogic {
 
     private final Session session;
 
-    WebSocketReadPieceListener(Session session) {
+    WebSocketReadPieceListenerLogic(Session session) {
         this.session = session;
     }
 

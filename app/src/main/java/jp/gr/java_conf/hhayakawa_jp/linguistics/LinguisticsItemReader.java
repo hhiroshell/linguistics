@@ -74,7 +74,7 @@ public class LinguisticsItemReader implements ItemReader {
     /**
      * 作品の読み込み開始／終了時に実行されるメソッドを定義したListener
      */
-    private ReadPieceListener readPieceListener = null;
+    private ReadPieceListenerLogic readPieceListenerLogic = null;
     
     /**
      * デフォルトコンストラクタ
@@ -172,7 +172,10 @@ public class LinguisticsItemReader implements ItemReader {
         String key = exec_parameters.getProperty(
                 Constants.ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY);
         if (key != null && key.length() > 0) {
-            readPieceListener = ReadPieceListenerRegister.getInstance().get(key);
+            ListenerLogic logic = ListenerLogicRegister.getInstance().get(key);
+            if (logic instanceof ReadPieceListenerLogic) {
+                readPieceListenerLogic = (ReadPieceListenerLogic)logic;
+            }
         }
     }
 
@@ -182,8 +185,8 @@ public class LinguisticsItemReader implements ItemReader {
      * @throws LinguisticsException
      */
     private void beforeReadPiece() throws LinguisticsException {
-        if (readPieceListener != null) {
-            readPieceListener.beforeRead(
+        if (readPieceListenerLogic != null) {
+            readPieceListenerLogic.beforeRead(
                     partition_id, indexProcessor.getProgress());
         }
     }

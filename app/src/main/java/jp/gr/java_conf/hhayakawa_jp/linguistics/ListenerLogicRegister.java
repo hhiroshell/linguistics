@@ -5,25 +5,25 @@ import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-public class ReadPieceListenerRegister {
+public class ListenerLogicRegister {
 
-    private static ReadPieceListenerRegister instance = null;
+    private static ListenerLogicRegister instance = null;
 
-    private Map<String, ReadPieceListener> register =
-            new HashMap<String, ReadPieceListener>();
+    private Map<String, ListenerLogic> register =
+            new HashMap<String, ListenerLogic>();
 
     // uninstanciable
-    private ReadPieceListenerRegister() {
+    private ListenerLogicRegister() {
     }
 
-    public static ReadPieceListenerRegister getInstance() {
+    public static ListenerLogicRegister getInstance() {
         if (instance == null) {
-            instance = new ReadPieceListenerRegister();
+            instance = new ListenerLogicRegister();
         }
         return instance;
     }
 
-    public String register(ReadPieceListener listener) {
+    public String register(ListenerLogic listener) {
         String key = null;
         do {
             key = RandomStringUtils.randomAlphanumeric(16);
@@ -32,7 +32,7 @@ public class ReadPieceListenerRegister {
         return key;
     }
 
-    public ReadPieceListener get(String key) {
+    public ListenerLogic get(String key) {
         return register.get(key);
     }
 
