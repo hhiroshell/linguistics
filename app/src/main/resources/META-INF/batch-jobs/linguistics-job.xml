@@ -6,6 +6,10 @@
         <property name="index" value="/tmp/shared/app_data/linguistics/data/index.txt"/>
     </properties>
 
+    <listeners>
+        <listener ref="LinguisticsJobListener"></listener>
+    </listeners>
+
     <step id="process">
         <chunk item-count="3">
             <reader ref="LinguisticsItemReader">

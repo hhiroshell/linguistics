@@ -14,6 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants;
 import jp.gr.java_conf.hhayakawa_jp.linguistics.Constants.ExecutionParameter;
+import jp.gr.java_conf.hhayakawa_jp.linguistics.JobListenerLogic;
 import jp.gr.java_conf.hhayakawa_jp.linguistics.ReadPieceListenerLogic;
 import jp.gr.java_conf.hhayakawa_jp.linguistics.ListenerLogicRegister;
 
@@ -77,12 +78,18 @@ public class WebSocketContoller {
         exec_parameters.put(ExecutionParameter.PROPKEY_THREAD_NUMBER,
                 String.valueOf(threads));
 
-        ReadPieceListenerLogic listener =
+        ReadPieceListenerLogic rplogic =
                 new WebSocketReadPieceListenerLogic(session);
-        String key = ListenerLogicRegister.getInstance().register(listener);
+        String rpkey = ListenerLogicRegister.getInstance().register(rplogic);
         exec_parameters.put(
-                ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY,
-                key);
+                ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_LOGIC_KEY,
+                rpkey);
+
+        JobListenerLogic jlogic = new WebSocketJobListenerLogic(session);
+        String jkey = ListenerLogicRegister.getInstance().register(jlogic);
+        exec_parameters.put(
+                ExecutionParameter.PROPKEY_JOB_LISTENER_LOGIC_KEY,
+                jkey);
 
         JobOperator operator = BatchRuntime.getJobOperator();
         operator.start(Constants.JOB_ID, exec_parameters);

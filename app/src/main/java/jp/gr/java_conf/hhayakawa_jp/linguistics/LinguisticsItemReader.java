@@ -170,7 +170,7 @@ public class LinguisticsItemReader implements ItemReader {
         Properties exec_parameters =
                 operator.getParameters(jobCtx.getExecutionId());
         String key = exec_parameters.getProperty(
-                Constants.ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_KEY);
+                Constants.ExecutionParameter.PROPKEY_READ_PIECE_LISTENER_LOGIC_KEY);
         if (key != null && key.length() > 0) {
             ListenerLogic logic = ListenerLogicRegister.getInstance().get(key);
             if (logic instanceof ReadPieceListenerLogic) {
