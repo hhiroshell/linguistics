@@ -254,7 +254,7 @@ public final class IndexProcessor {
         String[] path = dataPath.split("/");
         author = path[0];
         piece = path[1];
-        processed = lr_index.getLineNumber();
+        processed = lr_index.getLineNumber() - start + 1;
     }
 
 }
