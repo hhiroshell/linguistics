@@ -40,6 +40,7 @@ public class WebSocketJobListenerLogic implements JobListenerLogic {
 
     private static JsonObject createResultJson(long elapsed) {
         JsonObject json = Json.createObjectBuilder()
+                .add("type", "result")
                 .add("elapsed", elapsed)
                 .build();
         return json;

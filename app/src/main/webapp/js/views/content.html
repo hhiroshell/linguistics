@@ -1,4 +1,37 @@
+<label for="inputnumber-partitions">パーティション数</label>
+<input id="inputnumber-partitions"
+       data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1'}"/>
+<label for="inputnumber-threads">スレッド数</label>
+<input id="inputnumber-threads"
+       data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1'}"/>
+
 <button id= "start-button"
         data-bind="click: click_start_button, ojComponent: {component: 'ojButton', label: 'Start'}">
 </button>
-<p id="progress" class="text">progress</p>
+
+<div id="masonryLayout"
+     data-bind="ojComponent: {component: 'ojMasonryLayout'}">
+</div>
+
+<div id="listview"
+     aria-label="list using observable array"
+     data-bind="ojComponent: {
+        component: 'ojListView',
+        data: dataSource,
+        item: {renderer: function(context) {
+                    return context['data']['item'];
+                }
+            }
+        }">
+</div>
+
+<!-- This is a hidden holding area for tiles removed from the masonry layout. -->
+<div id="removedTilesHolder" style="display:none">
+    <!-- ko foreach: partitions -->
+    <div class="oj-panel"
+         data-bind="attr: {id: getTileId($index())}, css: 'oj-masonrylayout-tile-2x1'">
+        <span data-bind="text: name"></span>
+        <p class="oj-text-primary-color" data-bind="attr: {id: getProgressId($index())}"></p>
+    </div>
+    <!-- /ko -->
+</div>

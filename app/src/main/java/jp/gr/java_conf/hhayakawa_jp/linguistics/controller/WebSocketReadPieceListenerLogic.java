@@ -47,7 +47,8 @@ public class WebSocketReadPieceListenerLogic implements ReadPieceListenerLogic {
             throw new NullPointerException();
         }
         JsonObject json = Json.createObjectBuilder()
-                .add("patition_id", partition_id)
+                .add("type", "progress")
+                .add("partition_id", Integer.parseInt(partition_id))
                 .add("status", progress.getStatus().asText())
                 .add("author", progress.getAuthor())
                 .add("piece", progress.getPiece())
