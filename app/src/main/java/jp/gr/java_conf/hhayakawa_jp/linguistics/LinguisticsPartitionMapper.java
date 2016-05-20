@@ -96,6 +96,9 @@ public class LinguisticsPartitionMapper implements PartitionMapper {
                 for (int i = 0; i < partition_number; i++) {
                     int start = partition_length * i + 1;
                     int end = partition_length * (i + 1);
+                    if (i == partition_number - 1) {
+                        end = index_lines;
+                    }
                     Properties p = new Properties();
                     p.put(Constants.PartitionProperty.PROPKEY_INDEX_START,
                             String.valueOf(start));
