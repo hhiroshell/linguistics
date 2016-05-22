@@ -37,18 +37,16 @@ function(oj, ko, $)
             return 'progress' + (index);
         };
 
-        self.laps = ko.observableArray([
-            {lap: 'L1', elapsed: 12345, partitions: 1, threads: 1, jobid: 2},
-            {lap: 'L2', elapsed: 12345, partitions: 2, threads: 2, jobid: 3},
-            {lap: 'L3', elapsed: 12345, partitions: 3, threads: 3, jobid: 3},
-        ]);
+        self.laps = ko.observableArray();
 
         self.lapsDataSource = new oj.ArrayTableDataSource(self.laps, {idAttribute: "lap"});
 
         var lastLapIndex = self.laps().length;
 
         self.addLap = function(lap) {
-            self.laps.push(lap);
+            lastLapIndex++;
+            var id = {lap: "L" + lastLapIndex};
+            self.laps.unshift($.extend(id, lap));
         }
 
     }

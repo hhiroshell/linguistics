@@ -1,12 +1,10 @@
-var websocket;
-
 function getWSUri() {
     return "ws://" + location.host + "/linguistics/websocket";
 }
 
 function connectSocket() {
     if ('WebSocket' in window) {
-        websocket = new WebSocket(getWSUri());
+        var websocket = new WebSocket(getWSUri());
         websocket.onmessage = onMessage;
         websocket.onerror = onError;
         websocket.onclose = onClose;
@@ -14,6 +12,7 @@ function connectSocket() {
     } else {
         console.log('websocket not supported...!');
     }
+    return websocket;
 }
 
 function onError(evt) {
@@ -51,6 +50,25 @@ function onMessage(evt) {
     }
 }
 
-function sendMessage(message) {
-    websocket.send(message);
+function sendMessage(msg) {
+    var ws = connectSocket();
+    waitForSocketConnection(ws, function() {
+        console.log("message sent!!!");
+        ws.send(msg);
+    });
+}
+
+function waitForSocketConnection(socket, callback) {
+    setTimeout(function () {
+        if (socket.readyState === 1) {
+            console.log("Connection is made")
+            if(callback != null){
+                callback();
+            }
+            return;
+        } else {
+            console.log("wait for connection...")
+            waitForSocketConnection(socket, callback);
+        }
+    }, 5); // wait 5 milisecond for the connection...
 }
