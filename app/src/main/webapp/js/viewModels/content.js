@@ -24,8 +24,6 @@ function(oj, ko, $)
             {name: 'Partition 6'},
             {name: 'Partition 7'},
             {name: 'Partition 8'},
-            {name: 'Partition 9'},
-            {name: 'Partition 10'},
         ];
 
         getTileId = function(index)
