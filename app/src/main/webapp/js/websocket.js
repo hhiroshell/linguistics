@@ -30,7 +30,12 @@ function onMessage(evt) {
         var pid = data.partition_id;
         $("#progress" + pid).text(data.processed + ' / ' + data.pieces);
     } else if (data.type == "result") {
-        vm.addLap({lap: 'L4', elapsed: 12345, partitions: 3, threads: 3, jobid: 3});
+        vm.addLap({
+            elapsed: data.elapsed,
+            partitions: data.partitions,
+            threads: data.threads,
+            jobid: data.jobid
+        });
 
         $.ajax({
             url: 'resources/Controller/Clear',

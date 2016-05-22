@@ -26,14 +26,14 @@ public class LinguisticsJobListener implements JobListener {
     public void beforeJob() throws Exception {
         initListener();
         if (jobListenerLogic != null) {
-            jobListenerLogic.beforeJob();
+            jobListenerLogic.beforeJob(jobCtx);
         }
     }
 
     @Override
     public void afterJob() throws Exception {
         if (jobListenerLogic != null) {
-            jobListenerLogic.afterJob();
+            jobListenerLogic.afterJob(jobCtx);
         }
     }
 
