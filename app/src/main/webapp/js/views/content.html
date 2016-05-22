@@ -1,40 +1,65 @@
 <div class="oj-panel oj-margin oj-panel-shadow-sm" style="border-style: none;">
     <label for="inputnumber-partitions">Partitions: </label>
     <input id="inputnumber-partitions"
-           data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:8em'}}"/>
+           data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
     <label for="inputnumber-threads">Threads: </label>
     <input id="inputnumber-threads"
-            data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:8em'}}"/>
+           data-bind="ojComponent: {component: 'ojInputNumber', max: '10' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
     <button id= "start-button"
             data-bind="click: click_start_button, ojComponent: {component: 'ojButton', label: 'Start'}">
     </button>
 </div>
 
-
 <div class="oj-panel oj-margin oj-panel-alt1" style="border-style: none;">
     <div id="masonryLayout"
          data-bind="ojComponent: {component: 'ojMasonryLayout'}">
+        <!-- ko foreach: partitions -->
+        <div class="oj-panel oj-panel-shadow-sm"
+             style="border-style: none;"
+             data-bind="attr: {id: getTileId($index())}, css: 'oj-masonrylayout-tile-1x1'">
+            <h3><span data-bind="text: name"></span></h3>
+            <p class="oj-text-primary-color" data-bind="attr: {id: getProgressId($index())}"></p>
+        </div>
+        <!-- /ko -->
     </div>
 </div>
 
 <div class="oj-panel oj-margin oj-panel-shadow-sm" style="border-style: none;">
     <div>
-        <h2>Lap</h2>
+        <h2>Laps</h2>
     </div>
-    <div id="listview"
-         aria-label="list using observable array"
-         data-bind="ojComponent: {component: 'ojListView', data: dataSource, item: {renderer: function(context) {return context['data']['item'];}}}">
-    </div>
+    <ul id="lapList"
+        data-bind="ojComponent: {component: 'ojListView', data: lapsDataSource, item: {template: 'laps_template'}}">
+    </ul>
 </div>
 
-<!-- This is a hidden holding area for tiles removed from the masonry layout. -->
-<div id="removedTilesHolder" style="display:none">
-    <!-- ko foreach: partitions -->
-    <div class="oj-panel oj-panel-shadow-sm"
-         style="border-style: none;"
-         data-bind="attr: {id: getTileId($index())}, css: 'oj-masonrylayout-tile-1x1'">
-        <h3><span data-bind="text: name"></span></h3>
-        <p class="oj-text-primary-color" data-bind="attr: {id: getProgressId($index())}"></p>
-    </div>
-    <!-- /ko -->
-</div>
+<script type="text/html" id="laps_template">
+    <li data-bind="attr: {id: $data['lap']}">
+        <div class="oj-flex">
+            <div class="oj-lg-2 oj-md-2 oj-sm-12" style="max-width:70px;padding-bottom:5px">
+                <!--
+                <img data-bind="attr: {src: 'images/listView/'+ name +'.png', alt: name}"></img>
+                -->
+                <h1><span data-bind="text: lap"></span></h1>
+            </div>
+            <div class="oj-lg-10 oj-md-10 oj-sm-12">
+                <div class="oj-flex row">
+                    <div class="oj-lg-12">
+                        <h2><span class="header" data-bind="text: elapsed + ' [ms]'"></span></h2>
+                    </div>
+                </div>
+                <div class="oj-flex row">
+                    <div class="oj-lg-4 oj-md-4 oj-sm-12">
+                        <span class="data"><b>Partitions: </b><span data-bind="text: partitions"></span></span>
+                    </div>
+                    <div class="oj-lg-4 oj-md-4 oj-sm-12">
+                        <span class="data"><b>Threads: </b><span data-bind="text: threads"></span></span>
+                    </div>
+                    <div class="oj-lg-4 oj-md-4 oj-sm-12">
+                        <span class="data"><b>JobId: </b><span data-bind="text: jobid"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</script>

@@ -1,6 +1,6 @@
 var vm;
 
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource'],
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'ojs/ojmenu'],
 function(oj, ko, $)
 {
     function contentViewModel()
@@ -37,16 +37,20 @@ function(oj, ko, $)
             return 'progress' + (index);
         };
 
-        self.allItems = ko.observableArray();
+        self.laps = ko.observableArray([
+            {lap: 'L1', elapsed: 12345, partitions: 1, threads: 1, jobid: 2},
+            {lap: 'L2', elapsed: 12345, partitions: 2, threads: 2, jobid: 3},
+            {lap: 'L3', elapsed: 12345, partitions: 3, threads: 3, jobid: 3},
+        ]);
 
-        self.dataSource = new oj.ArrayTableDataSource(self.allItems, {idAttribute: "id"});
+        self.lapsDataSource = new oj.ArrayTableDataSource(self.laps, {idAttribute: "lap"});
 
-        var lastItemId = self.allItems().length;
+        var lastLapIndex = self.laps().length;
 
-        self.addItem = function(item) {
-            lastItemId++;
-            self.allItems.push({"id": lastItemId, "item": item});
+        self.addLap = function(lap) {
+            self.laps.push(lap);
         }
+
     }
 
     vm = new contentViewModel();

@@ -24,20 +24,13 @@ function onClose(evt) {
     console.log('websocket closed :' + evt.code + ":" + evt.reason);
 }
 
-var visible = 0;
-
 function onMessage(evt) {
     var data = JSON.parse(evt.data);
     if (data.type == "progress") {
         var pid = data.partition_id;
-        if (visible < pid + 1) {
-            var masonryLayout = $(":oj-masonrylayout");
-            masonryLayout.ojMasonryLayout("insertTile", "#tile" + visible, 0);
-            visible += 1;
-        }
         $("#progress" + pid).text(data.processed + ' / ' + data.pieces);
     } else if (data.type == "result") {
-        vm.addItem(data.elapsed);
+        vm.addLap({lap: 'L4', elapsed: 12345, partitions: 3, threads: 3, jobid: 3});
 
         $.ajax({
             url: 'resources/Controller/Clear',
@@ -54,14 +47,5 @@ function onMessage(evt) {
 }
 
 function sendMessage(message) {
-    var masonryLayout = $(":oj-masonrylayout");
-    var removedTilesHolder = $("#removedTilesHolder");
-    while (visible > 0) {
-        visible -= 1;
-        removedTilesHolder.append($("#tile" + visible));
-        masonryLayout.ojMasonryLayout("removeTile", "#tile" + visible);
-    }
-    masonryLayout.ojMasonryLayout("refresh");
-
     websocket.send(message);
 }
