@@ -1,6 +1,6 @@
 var vm;
 
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'ojs/ojmenu'],
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'ojs/ojmenu', 'ojs/ojgauge'],
 function(oj, ko, $)
 {
     function contentViewModel()
@@ -16,14 +16,14 @@ function(oj, ko, $)
         }
 
         self.partitions = [
-            {name: 'Partition 1'},
-            {name: 'Partition 2'},
-            {name: 'Partition 3'},
-            {name: 'Partition 4'},
-            {name: 'Partition 5'},
-            {name: 'Partition 6'},
-            {name: 'Partition 7'},
-            {name: 'Partition 8'},
+            {name: '#1'},
+            {name: '#2'},
+            {name: '#3'},
+            {name: '#4'},
+            {name: '#5'},
+            {name: '#6'},
+            {name: '#7'},
+            {name: '#8'},
         ];
 
         getTileId = function(index)
@@ -33,6 +33,14 @@ function(oj, ko, $)
         getProgressId = function(index)
         {
             return 'progress' + (index);
+        };
+        getAuthorId = function(index)
+        {
+            return 'author' + (index);
+        };
+        getPieceId = function(index)
+        {
+            return 'piece' + (index);
         };
 
         self.laps = ko.observableArray();

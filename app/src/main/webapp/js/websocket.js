@@ -28,6 +28,8 @@ function onMessage(evt) {
     if (data.type == "progress") {
         var pid = data.partition_id;
         $("#progress" + pid).text(data.processed + ' / ' + data.pieces);
+        $("#author" + pid).text(data.author);
+        $("#piece" + pid).text(data.piece);
     } else if (data.type == "result") {
         vm.addLap({
             elapsed: data.elapsed,
