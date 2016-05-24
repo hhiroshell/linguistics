@@ -3,7 +3,7 @@
         <div class="oj-flex-item">
             <label for="inputnumber-partitions">Partitions: </label>
             <input id="inputnumber-partitions"
-                   data-bind="ojComponent: {component: 'ojInputNumber', max: '8' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
+                   data-bind="ojComponent: {component: 'ojInputNumber', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
         </div>
         <div class="oj-flex-item">
             <span style="margin-right: 0.3em;"></span>
@@ -11,14 +11,14 @@
         <div class="oj-flex-item">
             <label for="inputnumber-threads">Threads: </label>
             <input id="inputnumber-threads"
-                   data-bind="ojComponent: {component: 'ojInputNumber', max: '8' ,min: '1', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
+                   data-bind="ojComponent: {component: 'ojInputNumber', step: '1', value: '1', rootAttributes: {style:'max-width:6em'}}"/>
         </div>
         <div class="oj-flex-item">
             <span style="margin-right: 0.3em;"></span>
         </div>
         <div class="oj-flex-item oj-sm-align-self-flex-end">
             <button id= "start-button"
-                    data-bind="click: click_start_button, ojComponent: {component: 'ojButton', label: 'Start'}">
+                    data-bind="click: click_start_button, ojComponent: {component: 'ojButton', label: 'Start'}, disabled: disableControls">
             </button>
         </div>
     </div>
@@ -33,28 +33,20 @@
              data-bind="attr: {id: getTileId($index())}, css: 'oj-masonrylayout-tile-1x1'">
             <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column">
                 <div class="oj-flex-item">
-                    <div class="oj-flex oj-sm-flex-items-initial oj-flex-items-pad">
+                    <div class="oj-flex oj-flex-items-pad">
                         <div class="oj-flex-item">
-                            <div style="float: left; width:40px; height:40px;"
-                                 data-bind="ojComponent: {component: 'ojLedGauge', value: '0', metricLabel: {rendered: 'off'}, color: '#0572CD'}">
-                            </div>
+                            <span class="demo-room-avatar bookable" style="float: left;" data-bind="text: name, attr: {id: getLabelId($index())}"></span>
                         </div>
                         <div class="oj-flex-item">
-                            <h3><p class="oj-text-primary-color" data-bind="attr: {id: getProgressId($index())}">- / -</p></h3>
+                            <h2><p class="oj-text-primary-color" data-bind="attr: {id: getProgressId($index())}">- / -</p></h3>
                         </div>
                     </div>
                 </div>
                 <div class="oj-flex-item">
-                    <p class="oj-text-primary-color" data-bind="attr: {id: getAuthorId($index())}">N/A</p>
+                    <p class="oj-text-primary-color" data-bind="attr: {id: getAuthorId($index())}">-----------------------</p>
                 </div>
                 <div class="oj-flex-item">
-                    <p class="oj-text-primary-color" data-bind="attr: {id: getPieceId($index())}">N/A</p>
-                </div>
-                <div class="oj-flex-item">
-                    <div id="gauge2"
-                         data-bind="ojComponent: {component: 'ojStatusMeterGauge', min: 0, max: 100, value: 20, metricLabel: {rendered: 'off'}, plotArea: {rendered: 'on'}, step: 10, readOnly: false}"
-                         style=height:10px; width:100%;">
-                    </div>
+                    <p class="oj-text-primary-color" data-bind="attr: {id: getPieceId($index())}">-----------------------</p>
                 </div>
             </div>
         </div>
@@ -101,3 +93,11 @@
         </div>
     </li>
 </script>
+
+<div style="display:none" id="modalDialog1" title="Modal Dialog" 
+     data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide'}">
+    <div class ="oj-progressbar-embedded" id="progressbar" data-bind="ojComponent:{component: 'ojProgressbar', value: -1}"></div>
+    <div class="oj-dialog-body">
+        データベースを初期化しています…。
+    </div>
+</div>

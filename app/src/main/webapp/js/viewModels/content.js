@@ -1,6 +1,6 @@
 var vm;
 
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'ojs/ojmenu', 'ojs/ojgauge'],
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'promise', 'ojs/ojbutton', 'ojs/ojinputnumber', 'ojs/ojmasonrylayout', 'ojs/ojlistview', 'ojs/ojarraytabledatasource', 'ojs/ojmenu', 'ojs/ojdialog', 'ojs/ojprogressbar'],
 function(oj, ko, $)
 {
     function contentViewModel()
@@ -15,7 +15,7 @@ function(oj, ko, $)
             }));
         }
 
-        self.partitions = [
+        self.partitions = ko.observableArray([
             {name: '#1'},
             {name: '#2'},
             {name: '#3'},
@@ -24,7 +24,11 @@ function(oj, ko, $)
             {name: '#6'},
             {name: '#7'},
             {name: '#8'},
-        ];
+        ]);
+
+        self.updateProgress = function(pid, processed) {
+            self.partitions.splice(pid, 1, {processed: processed});
+        }
 
         getTileId = function(index)
         {
@@ -42,6 +46,10 @@ function(oj, ko, $)
         {
             return 'piece' + (index);
         };
+        getLabelId = function(index)
+        {
+            return 'label' + (index);
+        };
 
         self.laps = ko.observableArray();
 
@@ -54,6 +62,16 @@ function(oj, ko, $)
             var id = {lap: "L" + lastLapIndex};
             self.laps.unshift($.extend(id, lap));
         }
+
+        self.handleOpen = function() {
+            $("#modalDialog1").ojDialog("open");
+        }
+
+        self.handleClose = function() {
+            $("#modalDialog1").ojDialog("close");
+        }
+
+        self.disableControls = ko.observable(false);
 
     }
 

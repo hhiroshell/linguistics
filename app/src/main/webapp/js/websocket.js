@@ -27,9 +27,10 @@ function onMessage(evt) {
     var data = JSON.parse(evt.data);
     if (data.type == "progress") {
         var pid = data.partition_id;
-        $("#progress" + pid).text(data.processed + ' / ' + data.pieces);
+        $("#progress" + pid).text(data.processed + '/' + data.pieces);
         $("#author" + pid).text(data.author);
         $("#piece" + pid).text(data.piece);
+        $("#label" + pid).css('background-color', 'forestgreen');
     } else if (data.type == "result") {
         vm.addLap({
             elapsed: data.elapsed,
@@ -37,13 +38,23 @@ function onMessage(evt) {
             threads: data.threads,
             jobid: data.jobid
         });
+        vm.handleOpen();
+        vm.disableControls = true;
+
+        for (var i = 0; i < 8; i++) {
+            $("#progress" + i).text('- / -');
+            $("#author" + i).text('-----------------------');
+            $("#piece" + i).text('-----------------------');
+            $("#label" + pid).css('background-color', '#darkgray');
+        }
 
         $.ajax({
             url: 'resources/Controller/Clear',
             method: 'DELETE',
-            async: false,
+            async: true,
             success: function(message) {
-                alert('続けて実行できます');
+                vm.handleClose();
+                vm.disableControls = false;
             },
             error: function(xhr, status, err) {
                 alert(xhr);
