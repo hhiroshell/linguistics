@@ -30,7 +30,7 @@ function onMessage(evt) {
         $("#progress" + pid).text(data.processed + '/' + data.pieces);
         $("#author" + pid).text(data.author);
         $("#piece" + pid).text(data.piece);
-        $("#label" + pid).css('background-color', 'forestgreen');
+        $("#label" + pid).addClass('.partition-indicator-avatar.running');
     } else if (data.type == "result") {
         vm.addLap({
             elapsed: data.elapsed,
@@ -45,7 +45,7 @@ function onMessage(evt) {
             $("#progress" + i).text('- / -');
             $("#author" + i).text('-----------------------');
             $("#piece" + i).text('-----------------------');
-            $("#label" + pid).css('background-color', '#darkgray');
+            $("#label" + pid).addClass('.partition-indicator-avatar.not-running');
         }
 
         $.ajax({

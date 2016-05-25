@@ -26,9 +26,9 @@ function(oj, ko, $)
             {name: '#8'},
         ]);
 
-        self.updateProgress = function(pid, processed) {
-            self.partitions.splice(pid, 1, {processed: processed});
-        }
+        //self.updateProgress = function(pid, processed) {
+            //self.partitions.splice(pid, 1, {processed: processed});
+        //}
 
         getTileId = function(index)
         {
@@ -46,9 +46,9 @@ function(oj, ko, $)
         {
             return 'piece' + (index);
         };
-        getLabelId = function(index)
+        getTileLabelId = function(index)
         {
-            return 'label' + (index);
+            return 'tileLabel' + (index);
         };
 
         self.laps = ko.observableArray();
@@ -64,11 +64,11 @@ function(oj, ko, $)
         }
 
         self.handleOpen = function() {
-            $("#modalDialog1").ojDialog("open");
+            $("#initializeDialog").ojDialog("open");
         }
 
         self.handleClose = function() {
-            $("#modalDialog1").ojDialog("close");
+            $("#initializeDialog").ojDialog("close");
         }
 
         self.disableControls = ko.observable(false);
