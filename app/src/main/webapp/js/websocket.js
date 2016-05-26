@@ -62,7 +62,6 @@ function onMessage(evt) {
             async: true,
             success: function(message) {
                 vm.handleClose();
-                vm.disableControls = false;
             },
             error: function(xhr, status, err) {
                 alert(xhr);
