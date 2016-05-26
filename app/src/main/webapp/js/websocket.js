@@ -30,7 +30,11 @@ function onMessage(evt) {
         $("#progress" + pid).text(data.processed + '/' + data.pieces);
         $("#author" + pid).text(data.author);
         $("#piece" + pid).text(data.piece);
-        $("#label" + pid).addClass('.partition-indicator-avatar.running');
+        var label = $("#tileLabel" + pid);
+        if (label.hasClass('partition-indicator-avatar not-running')) {
+            label.removeClass('partition-indicator-avatar not-running');
+            label.addClass('partition-indicator-avatar running');
+        }
     } else if (data.type == "result") {
         vm.addLap({
             elapsed: data.elapsed,
@@ -45,7 +49,11 @@ function onMessage(evt) {
             $("#progress" + i).text('- / -');
             $("#author" + i).text('-----------------------');
             $("#piece" + i).text('-----------------------');
-            $("#label" + pid).addClass('.partition-indicator-avatar.not-running');
+            var label = $("#tileLabel" + i);
+            if (label.hasClass('partition-indicator-avatar running')) {
+                label.removeClass('partition-indicator-avatar running');
+                label.addClass('partition-indicator-avatar not-running');
+            }
         }
 
         $.ajax({
